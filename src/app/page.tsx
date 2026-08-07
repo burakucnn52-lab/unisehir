@@ -1,7 +1,62 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
-import { GraduationCap, Building2, Star, Users, Search, Sparkles, MapPin, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { 
+  GraduationCap, 
+  Building2, 
+  Star, 
+  Users, 
+  Search, 
+  Sparkles, 
+  MapPin, 
+  TrendingUp, 
+  ArrowRight, 
+  CheckCircle2 
+} from 'lucide-react'
+import UniversiteLogo from '@/components/UniversiteLogo'
+import { universiteler } from '@/lib/universiteler'
 
 export default function HomePage() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showResults, setShowResults] = useState(false)
+  const router = useRouter()
+
+  // Arama sonuçları
+  const searchResults = searchQuery.length > 1 
+    ? universiteler.filter(uni => 
+        uni.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        uni.city.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5)
+    : []
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/universiteler?search=${encodeURIComponent(searchQuery)}`)
+    }
+  }
+
+  // Popüler şehirler (gerçek verilerle)
+  const populerSehirler = [
+    { name: 'İstanbul', slug: 'istanbul', count: universiteler.filter(u => u.citySlug === 'istanbul').length },
+    { name: 'Ankara', slug: 'ankara', count: universiteler.filter(u => u.citySlug === 'ankara').length },
+    { name: 'İzmir', slug: 'izmir', count: universiteler.filter(u => u.citySlug === 'izmir').length },
+    { name: 'Mardin', slug: 'mardin', count: universiteler.filter(u => u.citySlug === 'mardin').length },
+  ]
+
+  // Öne çıkan üniversiteler (en yüksek rating'li 6 tane)
+  const oneCikanUniversiteler = [...universiteler]
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 6)
+
+  // İstatistikler
+  const toplamUniversite = universiteler.length
+  const toplamSehir = new Set(universiteler.map(u => u.city)).size
+  const devletSayisi = universiteler.filter(u => u.type === 'Devlet').length
+  const vakifSayisi = universiteler.filter(u => u.type === 'Vakıf').length
+
   return (
     <div>
       {/* Hero Section */}
@@ -22,14 +77,14 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
-              <Sparkles className="w-4 h-4 text-accent-500" />
+              <Sparkles className="w-4 h-4 text-accent-400" />
               <span className="text-sm font-medium">Türkiye'nin Yeni Nesil Üniversite Rehberi</span>
             </div>
 
             {/* Ana Başlık */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               Üniversitenin İzini Sür,<br />
-              <span className="bg-gradient-to-r from-accent-400 to-accent-500 bg-clip-text text-transparent">
+              <span className="text-accent-400">
                 Şehri Keşfet
               </span>
             </h1>
@@ -41,31 +96,89 @@ export default function HomePage() {
               Gerçek öğrenci yorumları, kampüs fotoğrafları ve deneyimler burada.
             </p>
 
-            {/* Arama Kutusu */}
-            <div className="bg-white rounded-2xl shadow-2xl p-2 flex items-center max-w-2xl mx-auto mb-6">
-              <Search className="w-5 h-5 text-gray-400 ml-4" />
-              <input
-                type="text"
-                placeholder="Üniversite, şehir veya bölüm ara..."
-                className="flex-1 px-4 py-4 text-gray-700 outline-none text-lg"
-              />
-              <button className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:shadow-lg">
-                Ara
-              </button>
+            {/* Arama Kutusu - CANLI! */}
+            <div className="relative max-w-2xl mx-auto">
+              <form onSubmit={handleSearch}>
+                <div className="bg-white rounded-2xl shadow-2xl p-2 flex items-center mb-2">
+                  <Search className="w-5 h-5 text-gray-400 ml-4" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setShowResults(true)
+                    }}
+                    onFocus={() => setShowResults(true)}
+                    onBlur={() => setTimeout(() => setShowResults(false), 200)}
+                    placeholder="Üniversite, şehir veya bölüm ara..."
+                    className="flex-1 px-4 py-4 text-gray-700 outline-none text-lg"
+                  />
+                  <button 
+                    type="submit"
+                    className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:shadow-lg"
+                  >
+                    Ara
+                  </button>
+                </div>
+              </form>
+
+              {/* Canlı Arama Sonuçları */}
+              {showResults && searchResults.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-50">
+                  {searchResults.map((uni) => (
+                    <Link
+                      key={uni.id}
+                      href={`/universiteler/${uni.slug}`}
+                      className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0"
+                    >
+                      <UniversiteLogo logo={uni.logo} name={uni.name} size={40} />
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-gray-900">{uni.name}</div>
+                        <div className="text-sm text-gray-500 flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {uni.city} • {uni.type}
+                        </div>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-gray-400" />
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Popüler Aramalar */}
-            <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+            {/* Popüler Aramalar - CANLI! */}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm mt-6">
               <span className="text-primary-200">Popüler:</span>
-              {['Boğaziçi', 'ODTÜ', 'İstanbul', 'Ankara', 'Mardin'].map((tag) => (
-                <Link 
-                  key={tag}
-                  href="#"
-                  className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
-                >
-                  {tag}
-                </Link>
-              ))}
+              <Link 
+                href="/universiteler/bogazici-universitesi"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
+              >
+                Boğaziçi
+              </Link>
+              <Link 
+                href="/universiteler/odtu"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
+              >
+                ODTÜ
+              </Link>
+              <Link 
+                href="/sehirler/istanbul"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
+              >
+                İstanbul
+              </Link>
+              <Link 
+                href="/sehirler/ankara"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
+              >
+                Ankara
+              </Link>
+              <Link 
+                href="/sehirler/mardin"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full transition-colors border border-white/10"
+              >
+                Mardin
+              </Link>
             </div>
 
             {/* Alt Butonlar */}
@@ -116,7 +229,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* İstatistikler */}
+      {/* İstatistikler - GERÇEK VERİLER! */}
       <section className="py-16 bg-white relative">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -124,7 +237,7 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:from-primary-200 group-hover:to-primary-300 transition-colors">
                 <Building2 className="w-8 h-8 text-primary-600" />
               </div>
-              <div className="text-4xl font-bold text-gray-900 mb-1">25+</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{toplamUniversite}</div>
               <div className="text-sm text-gray-500 font-medium">Üniversite</div>
             </div>
 
@@ -132,24 +245,24 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-br from-accent-100 to-accent-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-8 h-8 text-accent-600" />
               </div>
-              <div className="text-4xl font-bold text-gray-900 mb-1">8+</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{toplamSehir}</div>
               <div className="text-sm text-gray-500 font-medium">Şehir</div>
             </div>
 
             <div className="text-center group hover:scale-105 transition-transform">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8 text-yellow-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Star className="w-8 h-8 text-blue-600" />
               </div>
-              <div className="text-4xl font-bold text-gray-900 mb-1">1000+</div>
-              <div className="text-sm text-gray-500 font-medium">Yorum</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{devletSayisi}</div>
+              <div className="text-sm text-gray-500 font-medium">Devlet</div>
             </div>
 
             <div className="text-center group hover:scale-105 transition-transform">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Users className="w-8 h-8 text-purple-600" />
               </div>
-              <div className="text-4xl font-bold text-gray-900 mb-1">10K+</div>
-              <div className="text-sm text-gray-500 font-medium">Öğrenci</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{vakifSayisi}</div>
+              <div className="text-sm text-gray-500 font-medium">Vakıf</div>
             </div>
           </div>
         </div>
@@ -178,19 +291,16 @@ export default function HomePage() {
                 icon: GraduationCap,
                 title: 'Detaylı Üniversite Bilgisi',
                 desc: 'Bölümler, puanlar, tarihçe ve daha fazlası her üniversite için.',
-                color: 'primary'
               },
               {
                 icon: MapPin,
                 title: 'Şehir Rehberi',
                 desc: 'Yaşayacağın şehri önceden tanı. Tarih, kültür ve yaşam bilgileri.',
-                color: 'accent'
               },
               {
                 icon: Star,
                 title: 'Gerçek Öğrenci Yorumları',
                 desc: 'Kantinden hocalara kadar her şey öğrenci gözünden.',
-                color: 'yellow'
               },
             ].map((feature, i) => (
               <div key={i} className="bg-white rounded-2xl p-8 hover:shadow-xl transition-shadow border border-gray-100">
@@ -205,7 +315,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Popüler Şehirler */}
+      {/* Popüler Şehirler - CANLI! */}
       <section className="py-16 bg-white">
         <div className="container-custom">
           <div className="flex items-end justify-between mb-8">
@@ -223,12 +333,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { name: 'İstanbul', slug: 'istanbul', uni: '15 Üniversite' },
-              { name: 'Ankara', slug: 'ankara', uni: '8 Üniversite' },
-              { name: 'İzmir', slug: 'izmir', uni: '5 Üniversite' },
-              { name: 'Mardin', slug: 'mardin', uni: '1 Üniversite' },
-            ].map((city) => (
+            {populerSehirler.map((city) => (
               <Link 
                 key={city.slug}
                 href={`/sehirler/${city.slug}`}
@@ -237,7 +342,7 @@ export default function HomePage() {
                 <div className="aspect-[4/5] bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 flex items-end p-6 relative">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-white font-medium">
-                    {city.uni}
+                    {city.count} Üniversite
                   </div>
                   <div className="text-white relative z-10">
                     <MapPin className="w-6 h-6 mb-2 opacity-80" />
@@ -253,7 +358,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Öne Çıkan Üniversiteler */}
+      {/* Öne Çıkan Üniversiteler - CANLI! */}
       <section className="py-16 bg-gray-50">
         <div className="container-custom">
           <div className="flex items-end justify-between mb-8">
@@ -275,22 +380,14 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: 'Boğaziçi Üniversitesi', city: 'İstanbul', rating: 4.8, type: 'Devlet' },
-              { name: 'ODTÜ', city: 'Ankara', rating: 4.7, type: 'Devlet' },
-              { name: 'İTÜ', city: 'İstanbul', rating: 4.6, type: 'Devlet' },
-              { name: 'Bilkent Üniversitesi', city: 'Ankara', rating: 4.5, type: 'Vakıf' },
-              { name: 'Hacettepe', city: 'Ankara', rating: 4.4, type: 'Devlet' },
-              { name: 'Mardin Artuklu', city: 'Mardin', rating: 4.2, type: 'Devlet' },
-            ].map((uni) => (
-              <div 
-                key={uni.name}
-                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer"
+            {oneCikanUniversiteler.map((uni) => (
+              <Link 
+                key={uni.id}
+                href={`/universiteler/${uni.slug}`}
+                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer block"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center">
-                    <GraduationCap className="w-8 h-8 text-primary-600" />
-                  </div>
+                  <UniversiteLogo logo={uni.logo} name={uni.name} size={64} />
                   <span className={`text-xs font-medium px-3 py-1 rounded-full ${
                     uni.type === 'Devlet' 
                       ? 'bg-blue-100 text-blue-700' 
@@ -299,7 +396,7 @@ export default function HomePage() {
                     {uni.type}
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-2">
                   {uni.name}
                 </h3>
                 <p className="text-sm text-gray-500 mb-4 flex items-center gap-1">
@@ -309,12 +406,12 @@ export default function HomePage() {
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-semibold text-gray-900">{uni.rating}</span>
+                    <span className="text-sm font-semibold text-gray-900">{uni.rating || 'N/A'}</span>
                     <span className="text-sm text-gray-500">/ 5.0</span>
                   </div>
                   <ArrowRight className="w-4 h-4 text-gray-400" />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -341,17 +438,17 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
-                href="/giris"
+                href="/universiteler"
                 className="inline-flex items-center gap-2 bg-white text-primary-700 hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold transition-all hover:shadow-2xl hover:scale-105"
               >
-                <Sparkles className="w-5 h-5" />
-                Hemen Başla
+                <GraduationCap className="w-5 h-5" />
+                Üniversiteleri Keşfet
               </Link>
               <Link 
-                href="/hakkimizda"
+                href="/bilgi-kartlari"
                 className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 px-8 py-4 rounded-xl font-semibold transition-all"
               >
-                Daha Fazla Bilgi
+                📚 Bilgi Kartları
               </Link>
             </div>
           </div>
