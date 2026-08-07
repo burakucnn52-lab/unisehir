@@ -28,7 +28,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'İstanbul, öğrenci hayatı için Türkiye\'nin en canlı şehirlerinden biridir. 60\'tan fazla üniversitesi, sayısız kütüphane, müze, kafe ve etkinlik alanı ile öğrencilere zengin bir sosyal yaşam sunar. Kadıköy, Beşiktaş, Beyoğlu ve Bakırköy gibi bölgeler öğrenciler için popülerdir. Ancak yüksek yaşam maliyeti dikkat gerektirir.',
     transportation: 'Metro, tramvay, otobüs, minibüs, deniz otobüsü ve vapur ile ulaşım oldukça gelişmiştir. Öğrenci kartı ile büyük indirimler mevcuttur. Trafik yoğunluğu şehrin en büyük sorunlarından biridir.',
     famousFor: ['Boğaz', 'Tarihi Yarımada', 'Kadıköy', 'İstiklal Caddesi', 'Adalar'],
-    image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Bosphorus_Bridge_2007.jpg/1280px-Bosphorus_Bridge_2007.jpg',
   },
   {
     id: 2,
@@ -43,7 +43,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'Ankara, ODTÜ, Hacettepe, Bilkent, Gazi gibi köklü üniversitelere ev sahipliği yapar. Kızılay ve Tunalı Hilmi bölgeleri öğrencilerin buluşma noktasıdır. Kütüphaneler, kültür merkezleri ve konferanslar açısından zengin bir şehir. İstanbul\'a göre daha sakin ve yaşam maliyeti daha uygundur.',
     transportation: 'Ankaray, metro ve otobüs ağı ile ulaşım kolaydır. Şehir içi ulaşım sistematiktir. Öğrenciler için indirimli kartlar mevcuttur. Şehir dışına ise otogar ve tren garı üzerinden ulaşım sağlanır.',
     famousFor: ['Anıtkabir', 'Kızılay', 'Ankara Kalesi', 'Beypazarı', 'Kuğulu Park'],
-    image: 'https://images.unsplash.com/photo-1589656966895-2f33e7653819?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/An%C4%B1tkabir_from_Aslanl%C4%B1_Yol.jpg/1280px-An%C4%B1tkabir_from_Aslanl%C4%B1_Yol.jpg',
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'İzmir, Ege ve Dokuz Eylül gibi büyük üniversitelere sahiptir. Alsancak ve Bornova bölgeleri öğrenci hayatının merkezidir. Deniz, güzel hava ve rahat yaşam tarzı ile öğrencilere büyük avantaj sağlar. Kültürel etkinlikler ve festivaller yıl boyunca devam eder.',
     transportation: 'Metro, tramvay, otobüs ve İZBAN banliyö treni ile ulaşım rahattır. Vapur ile Karşıyaka-Konak arası ulaşım keyiflidir. Bisiklet yolları da yaygındır.',
     famousFor: ['Kordon', 'Kemeraltı', 'Alsancak', 'Efes Antik Kenti', 'Çeşme'],
-    image: 'https://images.unsplash.com/photo-1596397249129-c7a8f8718873?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Izmir_Konak_Square.jpg/1280px-Izmir_Konak_Square.jpg',
   },
   {
     id: 4,
@@ -73,7 +73,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'Eskişehir, Türkiye\'nin öğrenci başkenti olarak bilinir. Anadolu Üniversitesi ve Eskişehir Osmangazi Üniversitesi\'nin varlığı şehri canlı tutar. Porsuk Nehri kenarında yürüyüş yolları, kafeler ve modern yaşam alanları bulunur. Yaşam maliyeti düşük, sosyal olanaklar bol.',
     transportation: 'Tramvay hattı şehrin ana ulaşım aracıdır. Kompakt yapısı sayesinde her yere kolay ulaşılır. Bisiklet dostu bir şehirdir.',
     famousFor: ['Porsuk Nehri', 'Odunpazarı', 'Sazova Parkı', 'Lületaşı', 'Kentpark'],
-    image: 'https://images.unsplash.com/photo-1600298881974-6be191ceeda1?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Odunpazar%C4%B1_evleri.jpg/1280px-Odunpazar%C4%B1_evleri.jpg',
   },
   {
     id: 5,
@@ -88,7 +88,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'Karadeniz Teknik Üniversitesi\'nin varlığıyla canlı bir öğrenci hayatı vardır. Deniz manzarası, yeşil doğa ve samimi insan ilişkileri ile öne çıkar. Uzungöl, Sümela Manastırı gibi doğal ve tarihi güzelliklere yakınlık avantajdır.',
     transportation: 'Şehir içi ulaşım genelde dolmuş ve otobüslerle sağlanır. Havalimanı şehir merkezine yakındır.',
     famousFor: ['Uzungöl', 'Sümela Manastırı', 'Ayasofya', 'Boztepe', 'Hamsi'],
-    image: 'https://images.unsplash.com/photo-1591123720164-8ce1c7c33e9d?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Sumela_Monastery.jpg/1280px-Sumela_Monastery.jpg',
   },
   {
     id: 6,
@@ -103,7 +103,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'Çukurova Üniversitesi ile öğrenci hayatı canlıdır. Balcalı Kampüsü Türkiye\'nin en büyük kampüslerinden biridir. Sıcak iklim, misafirperver insanlar ve zengin mutfak öğrencilere avantaj sağlar. Adana kebabı, şalgam suyu, biberli ekmek gibi lezzetler meşhurdur.',
     transportation: 'Metro hattı, otobüs ve dolmuş ile ulaşım kolaydır. Şehir düz bir arazide olduğu için ulaşım rahatça sağlanır.',
     famousFor: ['Adana Kebabı', 'Taş Köprü', 'Sabancı Camii', 'Çukurova', 'Şalgam'],
-    image: 'https://images.unsplash.com/photo-1571770095004-6b61b1cf308a?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Sabanci_Central_Mosque.jpg/1280px-Sabanci_Central_Mosque.jpg',
   },
   {
     id: 7,
@@ -118,22 +118,7 @@ export const sehirler: Sehir[] = [
     studentLife: 'Mardin Artuklu Üniversitesi ile genç bir üniversite şehri olmuştur. Tarihi dokusu ve kültürel zenginliği öğrencilere eşsiz bir deneyim sunar. Yaşam maliyeti düşük, insanlar samimi. Süryanice, Arapça, Kürtçe gibi diller öğrenilebilir.',
     transportation: 'Şehir içi ulaşım dolmuş ve otobüslerle sağlanır. Tarihi Mardin\'in dar sokakları yürüyerek gezilir. Yakın şehirlere karayolu ile ulaşım mümkündür.',
     famousFor: ['Taş Evleri', 'Deyrulzafaran', 'Mezopotamya Manzarası', 'Süryani Kültürü', 'Kırklar Kilisesi'],
-    image: 'https://images.unsplash.com/photo-1579689925320-af1a2adcbcf1?w=800',
-  },
-  {
-    id: 8,
-    slug: 'diger',
-    name: 'Diğer Şehirler',
-    region: 'Türkiye',
-    population: 'Çeşitli',
-    climate: 'Çeşitli',
-    livingCost: 'Düşük',
-    description: 'Türkiye\'nin diğer öğrenci şehirleri.',
-    history: 'Türkiye\'nin 81 ilinde onlarca üniversite bulunmaktadır. Her şehrin kendine özgü tarihi, kültürü ve öğrenci hayatı vardır.',
-    studentLife: 'Bursa, Konya, Antalya, Samsun, Kayseri, Diyarbakır, Gaziantep gibi şehirler de büyük üniversitelere ev sahipliği yapar.',
-    transportation: 'Şehre göre değişiklik gösterir.',
-    famousFor: ['Çeşitli üniversiteler', 'Farklı kültürler', 'Öğrenci dostu şehirler'],
-    image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Mardin_evleri.jpg/1280px-Mardin_evleri.jpg',
   },
 ]
 
